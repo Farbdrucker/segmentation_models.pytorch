@@ -24,7 +24,7 @@ class LayerNorm(nn.LayerNorm):
             batch_size, channels, height, width = x.shape
             x = x.view(batch_size, channels, -1).transpose(1, 2)
             x = F.layer_norm(x, self.normalized_shape, self.weight, self.bias, self.eps)
-            x = x.transpose(1, 2).view(batch_size, channels, height, width)
+            x = x.transpose(1, 2).contiguous().view(batch_size, channels, height, width)
         else:
             x = F.layer_norm(x, self.normalized_shape, self.weight, self.bias, self.eps)
         return x
